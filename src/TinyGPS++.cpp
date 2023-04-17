@@ -112,11 +112,11 @@ int TinyGPSPlus::fromHex(char a)
 
 // static
 // Parse a (potentially negative) number with up to 2 decimal digits -xxxx.yy
-int64_t TinyGPSPlus::parseDecimal(const char *term)
+time_t TinyGPSPlus::parseDecimal(const char *term)
 {
     bool negative = *term == '-';
     if (negative) ++term;
-    int64_t ret = 100 * (int64_t)atoll(term);
+    time_t ret = 100 * (time_t)atoll(term);
     while (isdigit(*term)) ++term;
     if (*term == '.' && isdigit(term[1]))
     {

@@ -63,7 +63,7 @@ struct TinyGPSLocation
 public:
     bool isValid() const    { return valid; }
     bool isUpdated() const  { return updated; }
-    uint64_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : ULONG_LONG_MAX; }
+    time_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : LONG_LONG_MAX; }
     const RawDegrees &rawLat()     { updated = false; return rawLatData; }
     const RawDegrees &rawLng()     { updated = false; return rawLngData; }
     double lat();
@@ -75,7 +75,7 @@ public:
 private:
     bool valid, updated;
     RawDegrees rawLatData, rawLngData, rawNewLatData, rawNewLngData;
-    uint64_t lastCommitTime;
+    time_t lastCommitTime;
     void commit();
     void setLatitude(const char *term);
     void setLongitude(const char *term);
@@ -87,9 +87,9 @@ struct TinyGPSDate
 public:
     bool isValid() const       { return valid; }
     bool isUpdated() const     { return updated; }
-    uint64_t age() const       { return valid ? esp_timer_get_time()/1000 - lastCommitTime : ULONG_LONG_MAX; }
+    time_t age() const       { return valid ? esp_timer_get_time()/1000 - lastCommitTime : LONG_LONG_MAX; }
 
-    int64_t value()           { updated = false; return date; }
+    time_t value()           { updated = false; return date; }
     uint16_t year();
     uint8_t month();
     uint8_t day();
@@ -99,8 +99,8 @@ public:
 
 private:
     bool valid, updated;
-    int64_t date, newDate;
-    uint64_t lastCommitTime;
+    time_t date, newDate;
+    time_t lastCommitTime;
     void commit();
     void setDate(const char *term);
 };
@@ -111,9 +111,9 @@ struct TinyGPSTime
 public:
     bool isValid() const       { return valid; }
     bool isUpdated() const     { return updated; }
-    uint64_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : ULONG_LONG_MAX; }
+    time_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : LONG_LONG_MAX; }
 
-    int64_t value()           { updated = false; return time; }
+    time_t value()           { updated = false; return time; }
     uint8_t hour();
     uint8_t minute();
     uint8_t second();
@@ -124,8 +124,8 @@ public:
 
 private:
     bool valid, updated;
-    int64_t time, newTime;
-    uint64_t lastCommitTime;
+    time_t time, newTime;
+    time_t lastCommitTime;
     void commit();
     void setTime(const char *term);
 };
@@ -136,7 +136,7 @@ struct TinyGPSDecimal
 public:
     bool isValid() const    { return valid; }
     bool isUpdated() const  { return updated; }
-    uint64_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : ULONG_LONG_MAX; }
+    time_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : LONG_LONG_MAX; }
     int32_t value()         { updated = false; return val; }
 
     TinyGPSDecimal() : valid(false), updated(false), val(0)
@@ -144,8 +144,8 @@ public:
 
 private:
     bool valid, updated;
-    uint64_t lastCommitTime;
-    int32_t val, newval;
+    time_t lastCommitTime;
+    time_t val, newval;
     void commit();
     void set(const char *term);
 };
@@ -156,7 +156,7 @@ struct TinyGPSInteger
 public:
     bool isValid() const    { return valid; }
     bool isUpdated() const  { return updated; }
-    uint64_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : ULONG_LONG_MAX; }
+    time_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : LONG_LONG_MAX; }
     uint32_t value()        { updated = false; return val; }
 
     TinyGPSInteger() : valid(false), updated(false), val(0)
@@ -164,7 +164,7 @@ public:
 
 private:
     bool valid, updated;
-    uint64_t lastCommitTime;
+    time_t lastCommitTime;
     uint32_t val, newval;
     void commit();
     void set(const char *term);
@@ -206,7 +206,7 @@ public:
 
     bool isUpdated() const  { return updated; }
     bool isValid() const    { return valid; }
-    uint64_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : ULONG_LONG_MAX; }
+    time_t age() const    { return valid ? esp_timer_get_time()/1000 - lastCommitTime : LONG_LONG_MAX; }
     const char *value()     { updated = false; return buffer; }
 
 private:
@@ -215,7 +215,7 @@ private:
 
     char stagingBuffer[_GPS_MAX_FIELD_SIZE + 1];
     char buffer[_GPS_MAX_FIELD_SIZE + 1];
-    uint64_t lastCommitTime;
+    time_t lastCommitTime;
     bool valid, updated;
     const char *sentenceName;
     int termNumber;
@@ -245,7 +245,7 @@ public:
     static double courseTo(double lat1, double long1, double lat2, double long2);
     static const char *cardinal(double course);
 
-    static int64_t parseDecimal(const char *term);
+    static time_t parseDecimal(const char *term);
     static void parseDegrees(const char *term, RawDegrees &deg);
 
     uint32_t charsProcessed()   const { return encodedCharCount; }
