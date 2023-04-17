@@ -23,9 +23,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "TinyGPS++.h"
 
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cctype>
+#include <cstdlib>
 
 #define _GPRMCterm   "GPRMC"
 #define _GPGGAterm   "GPGGA"
@@ -193,7 +193,7 @@ bool TinyGPSPlus::endOfTermHandler()
             }
 
             // Commit all custom listeners of this sentence type
-            for (TinyGPSCustom *p = customCandidates; p != NULL && strcmp(p->sentenceName, customCandidates->sentenceName) == 0; p = p->next)
+            for (TinyGPSCustom *p = customCandidates; p != nullptr && strcmp(p->sentenceName, customCandidates->sentenceName) == 0; p = p->next)
                 p->commit();
             return true;
         }
@@ -217,9 +217,9 @@ bool TinyGPSPlus::endOfTermHandler()
             curSentenceType = GPS_SENTENCE_OTHER;
 
         // Any custom candidates of this sentence type?
-        for (customCandidates = customElts; customCandidates != NULL && strcmp(customCandidates->sentenceName, term) < 0; customCandidates = customCandidates->next);
-        if (customCandidates != NULL && strcmp(customCandidates->sentenceName, term) > 0)
-            customCandidates = NULL;
+        for (customCandidates = customElts; customCandidates != nullptr && strcmp(customCandidates->sentenceName, term) < 0; customCandidates = customCandidates->next);
+        if (customCandidates != nullptr && strcmp(customCandidates->sentenceName, term) > 0)
+            customCandidates = nullptr;
 
         return false;
     }
@@ -274,7 +274,7 @@ bool TinyGPSPlus::endOfTermHandler()
         }
 
     // Set custom values as needed
-    for (TinyGPSCustom *p = customCandidates; p != NULL && strcmp(p->sentenceName, customCandidates->sentenceName) == 0 && p->termNumber <= curTermNumber; p = p->next)
+    for (TinyGPSCustom *p = customCandidates; p != nullptr && strcmp(p->sentenceName, customCandidates->sentenceName) == 0 && p->termNumber <= curTermNumber; p = p->next)
         if (p->termNumber == curTermNumber)
             p->set(term);
 
@@ -491,7 +491,7 @@ void TinyGPSPlus::insertCustom(TinyGPSCustom *pElt, const char *sentenceName, in
 {
     TinyGPSCustom **ppelt;
 
-    for (ppelt = &this->customElts; *ppelt != NULL; ppelt = &(*ppelt)->next)
+    for (ppelt = &this->customElts; *ppelt != nullptr; ppelt = &(*ppelt)->next)
     {
         int cmp = strcmp(sentenceName, (*ppelt)->sentenceName);
         if (cmp < 0 || (cmp == 0 && termNumber < (*ppelt)->termNumber))
